@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204003917) do
+ActiveRecord::Schema.define(version: 20150204013310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(version: 20150204003917) do
   end
 
   add_index "entries", ["word"], name: "index_entries_on_word", using: :btree
+
+  create_table "games", force: true do |t|
+    t.integer  "user_id",                      null: false
+    t.string   "game_word",                    null: false
+    t.string   "current_word",                 null: false
+    t.string   "guessed_letters", default: [],              array: true
+    t.integer  "wrong_guesses",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "session_token", null: false

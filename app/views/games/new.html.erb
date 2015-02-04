@@ -1,3 +1,8 @@
 <h1>There will be a game here!</h1>
 
+<p><%= @game.game_word %> is the word</p>
+<p><%= @game.current_word %> is what you have so far</p>
+<p><%= @game.guessed_letters %> is the letters you have guessed</p>
+<p><%= @game.wrong_guesses %> is how many wrong guesses you've made</p>
+
 <%= button_to "Logout", session_url, method: :delete %>

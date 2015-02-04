@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
   validates :session_token, presence: true
   
-  after_initialize :ensure_session_token, :set_game_stats
+  after_initialize :ensure_session_token, :set_win_record
+  
+  has_many :games
   
   def reset_token!
     self.session_token = SecureRandom.urlsafe_base64(16)
@@ -13,7 +15,7 @@ class User < ActiveRecord::Base
   private
   
   
-  def set_game_stats
+  def set_win_record
     self.games_won = 0
     self.games_lost = 0
   end
