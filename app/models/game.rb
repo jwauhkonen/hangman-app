@@ -10,7 +10,7 @@ class Game < ActiveRecord::Base
   
   
   def set_game_stats
-    self.game_word = Entry.where("char_length(word) > 6 AND char_length(word) < 13").sample.word
+    self.game_word = Entry.where("char_length(word) > 3 AND char_length(word) < 8").sample.word
     self.current_word = ("_" * self.game_word.length)
     self.wrong_guesses = 0
   end
