@@ -3,5 +3,5 @@ Rails.application.routes.draw do
   
   resource :session, only: [:new, :create, :destroy]
   
-  resource :game, only: [:new]
+  resources :games, only: [:new, :show, :update]
 end

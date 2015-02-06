@@ -7,4 +7,13 @@ class GamesController < ApplicationController
     render :new
   end
   
+  def show
+    @game = Game.find(params[:id])
+    render :show
+  end
+  
+  def update
+    
+  end
+  
 end
