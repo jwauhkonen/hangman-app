@@ -19,28 +19,24 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     letter = params[:letter]
     new_current_word = @game.current_word.split("")
+    new_guessed_letters = []
+    @game.guessed_letters.each { |guess| new_guessed_letters << guess }
+    wrong = true
+    
+    new_guessed_letters << letter
 
     (0...@game.game_word.length).each do |i|
       if @game.game_word[i] == letter
         new_current_word[i] = letter
+        wrong = false
       end
     end
     
-    @game.update({current_word: new_current_word.join("")})
+    @game.current_word = new_current_word.join("")
+    @game.guessed_letters = new_guessed_letters
+    @game.wrong_guesses += 1 if wrong
+    @game.save
     render :new
   end
-  
-  # def create
-  #   @game = Game.find(params[:game][:id])
-  #   letter = params[:game][:letter]
-  #
-  #   (0...@game.game_word.length).each do |i|
-  #     if @game.game_word[i] == letter
-  #       @game.current_word[i] = @game.game_word[i]
-  #     end
-  #   end
-  #
-  #   @game.save
-  # end
   
 end

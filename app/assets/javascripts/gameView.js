@@ -24,7 +24,6 @@
 				that.currentWord = data.current_word;
 				that.guessedLetters = data.guessed_letters;
 				that.wrongGuesses = data.wrong_guesses;
-				debugger
 				that.renderGame();
 			}
 		})
@@ -57,20 +56,6 @@
 				that.getGameData();
 			}
 		})
-		// $.ajax({
-// 			url: "/games",
-// 			type: "POST",
-// 			data: {
-// 				id: this.gameId,
-// 				letter: guess
-// 			},
-// 			success: function () {
-// 				console.log('it worked')
-// 			}
-//
-// 		});
-
-
 	}
 	
 	GameView.prototype.renderCurrentWord = function () {
@@ -78,7 +63,12 @@
 	}
 	
 	GameView.prototype.renderGuessedLetters = function () {
-		$("#guessed-letters").html("guessed letters are " + this.guessedLetters);
+		var guessesString = "";
+		this.guessedLetters.forEach( function (letter) {
+			guessesString += (letter + ", ")
+		})
+		debugger
+		$("#guessed-letters").html("guessed letters are " + guessesString);
 	}
 	
 	GameView.prototype.renderWrongGuesses = function () {
