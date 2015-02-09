@@ -67,7 +67,6 @@
 		this.guessedLetters.forEach( function (letter) {
 			guessesString += (letter + ", ")
 		})
-		debugger
 		$("#guessed-letters").html("guessed letters are " + guessesString);
 	}
 	
