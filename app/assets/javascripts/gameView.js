@@ -20,6 +20,7 @@
 		this.guessedLetters = data.guessed_letters;
 		this.wrongGuesses = data.wrong_guesses;
 		this.renderGame();
+		this.checkGameOver();
 	}
 	
 	GameView.prototype.getGameData = function () {
@@ -33,6 +34,16 @@
 		})
 	}
 	
+	GameView.prototype.checkGameOver = function () {
+		if (this.currentWord.indexOf("_") === -1) {
+			alert("You win!")
+		}
+		
+		if (this.wrongGuesses === 10) {
+			alert("You lose!")
+		}
+	}
+	
 	GameView.prototype.renderGame = function () {
 		this.renderCurrentWord();
 		this.renderGuessedLetters();
@@ -40,10 +51,20 @@
 	}
 	
 	GameView.prototype.listenForInput = function () {
-		$("#guess-button").on("click", function () {
+		var that = this;
+		
+		var clickSubmit = function () {
 			var guess = $("#player-guess")[0].value
-			this.submitGuess(guess);
-		}.bind(this));
+			that.submitGuess(guess);
+		};
+		
+		$("#guess-button").on("click", clickSubmit);
+		
+		$("#game-area").on("keypress", function (e) {
+			if (e.which === 13) {
+				clickSubmit();
+			}
+		});
 	}
 	
 	GameView.prototype.submitGuess = function (guess) {
