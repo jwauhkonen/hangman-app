@@ -10,9 +10,16 @@
 		this.guessedLetters = [];
 		this.wrongGuesses = 0;
 		
-		// getGameData renders the game on success.
+		// getGameData prompts the next move the game on success.
 		this.getGameData();
 		this.listenForInput();
+	}
+	
+	GameView.prototype.updateGame = function (data) {
+		this.currentWord = data.current_word;
+		this.guessedLetters = data.guessed_letters;
+		this.wrongGuesses = data.wrong_guesses;
+		this.renderGame();
 	}
 	
 	GameView.prototype.getGameData = function () {
@@ -21,10 +28,7 @@
 			url: this.gameId,
 			type: "GET",
 			success: function (data) {
-				that.currentWord = data.current_word;
-				that.guessedLetters = data.guessed_letters;
-				that.wrongGuesses = data.wrong_guesses;
-				that.renderGame();
+				that.updateGame(data);
 			}
 		})
 	}
@@ -45,17 +49,40 @@
 	GameView.prototype.submitGuess = function (guess) {
 		console.log(guess);
 		var that = this;
-		$.ajax({
-			url: this.gameId,
-			type: "PATCH",
-			data: {
-				letter: guess
-			},
-			success: function () {
-				console.log('hooray')
-				that.getGameData();
-			}
-		})
+		if (this.validMove(guess)) {
+			$.ajax({
+				url: this.gameId,
+				type: "PATCH",
+				data: {
+					letter: guess
+				},
+				success: function () {
+					console.log('hooray')
+					that.getGameData();
+				}
+			})
+		}
+		
+		$("#player-guess").val("");
+	}
+	
+	GameView.prototype.validMove = function (guess) {
+		if (guess.length !== 1) {
+			alert("Guess must be a single character.");
+			return false
+		}
+		
+		if (/[a-z]/.test(guess) === false) {
+			alert("Guess must be a lower-case letter.");
+			return false
+		}
+		
+		if (this.guessedLetters.indexOf(guess) !== -1) {
+			alert("Cannot guess the same letter twice.");
+			return false
+		}
+		
+		return true
 	}
 	
 	GameView.prototype.renderCurrentWord = function () {
