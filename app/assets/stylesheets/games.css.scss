@@ -3,6 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #game-info {
+	position: relative;
 	width: 500px;
 	height: 300px;
 	float: left;
@@ -25,6 +26,42 @@
 	position: absolute;
 	z-index: 10;
 	background-color: white;
+}
+
+#guessed-letters {
+	position: absolute;
+	font-size: 20px;
+	bottom: 250px;
+	left: 20px;
+}
+
+#wrong-guesses {
+	position: absolute;
+	font-size: 20px;
+	bottom: 200px;
+	left: 20px;
+}
+
+#player-guess {
+	position: absolute;
+	font-size: 20px;
+	width: 30px;
+	bottom: 150px;
+	left: 20px;
+}
+
+#guess-button {
+	position: absolute;
+	font-size: 20px;
+	bottom: 150px;
+	left: 70px;
+}
+
+#current-word {
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+	font-size: 50px;
 }
 
 .hangman-cover[data-id="0"] {

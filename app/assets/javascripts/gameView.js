@@ -10,7 +10,7 @@
 		this.guessedLetters = [];
 		this.wrongGuesses = 0;
 		
-		// getGameData prompts the next move the game on success.
+		// getGameData prompts the next move on success.
 		this.getGameData();
 		this.listenForInput();
 	}
@@ -116,19 +116,18 @@
 	}
 	
 	GameView.prototype.renderCurrentWord = function () {
-		$("#current-word").html("current word is " + this.currentWord);
+		var wordString = this.currentWord.split("").join(" ")
+		$("#current-word").html(wordString);
 	}
 	
 	GameView.prototype.renderGuessedLetters = function () {
-		var guessesString = "";
-		this.guessedLetters.forEach( function (letter) {
-			guessesString += (letter + ", ")
-		})
-		$("#guessed-letters").html("guessed letters are " + guessesString);
+		var guessesString = this.guessedLetters.sort().join(", ");
+		$("#guessed-letters").html("Guessed letters: " + guessesString);
 	}
 	
 	GameView.prototype.renderWrongGuesses = function () {
-		$("#wrong-guesses").html("there are " + this.wrongGuesses + "wrong guesses.");
+		var guessesLeft = (10 - this.wrongGuesses)
+		$("#wrong-guesses").html("You have " + guessesLeft + " wrong guesses left.");
 	}
 	
 	
