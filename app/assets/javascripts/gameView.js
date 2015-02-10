@@ -3,14 +3,17 @@
 		window.Hangman = {};
 	}
 	
-	var GameView = Hangman.GameView = function ($el, gameId) {
+	var GameView = Hangman.GameView = function ($el, gameId, wins, losses) {
 		this.$el = $el;
 		this.gameId = gameId;
+		this.wins = wins;
+		this.losses = losses;
 		this.currentWord = "";
 		this.guessedLetters = [];
 		this.wrongGuesses = 0;
-		
+	
 		// getGameData prompts the next move on success.
+		this.renderWinCount();
 		this.getGameData();
 		this.listenForInput();
 	}
@@ -34,13 +37,43 @@
 		})
 	}
 	
+	GameView.prototype.gameWin = function () {
+		var that = this;
+		$.ajax({
+			url: "/session",
+			type: "PATCH",
+			data: {
+				game: "win"
+			},
+			success: function () {
+				that.wins += 1;
+				that.renderWinCount();
+			}
+		})
+	}
+	
+	GameView.prototype.gameLoss = function () {
+		var that = this;
+		$.ajax({
+			url: "/session",
+			type: "PATCH",
+			data: {
+				game: "lose"
+			},
+			success: function () {
+				that.losses += 1
+				that.renderWinCount();
+			}
+		})
+	}
+	
 	GameView.prototype.checkGameOver = function () {
 		if (this.currentWord.indexOf("_") === -1) {
-			alert("You win!")
+			this.gameWin();
 		}
 		
 		if (this.wrongGuesses === 10) {
-			alert("You lose!")
+			this.gameLoss();
 			var selector = '.hangman-cover[data-id="11"]'
 			$(selector).css("visibility", "hidden");
 		}
@@ -51,6 +84,10 @@
 		this.renderGuessedLetters();
 		this.renderWrongGuesses();
 		this.revealLimb();
+	}
+	
+	GameView.prototype.renderWinCount = function () {
+		$("#win-count").html(this.wins + " wins - " + this.losses + " losses");
 	}
 	
 	GameView.prototype.revealLimb = function () {

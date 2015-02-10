@@ -39,6 +39,8 @@
 	var imageObj = new Image();
 	var $el = $("#game-area");
 	var gameId = <%= @game.id %>;
-	new Hangman.GameView($el, gameId);
+	var wins = <%= @game.user.games_won %>
+	var losses = <%= @game.user.games_lost %>
+	new Hangman.GameView($el, gameId, wins, losses);
 </script>
 	
