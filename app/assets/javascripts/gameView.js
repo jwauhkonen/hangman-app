@@ -55,7 +55,8 @@
 	
 	GameView.prototype.revealLimb = function () {
 		var selector = '.hangman-cover[data-id="' + this.wrongGuesses + '"]'
-		$(selector).css("visibility", "hidden");
+		$(selector).css("opacity", "0");
+		$(selector).css("transition", "opacity 1s");
 	}
 	
 	GameView.prototype.listenForInput = function () {
