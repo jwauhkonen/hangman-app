@@ -1,14 +1,35 @@
 <h1>There will be a game here!</h1>
+<%= button_to "Logout", session_url, method: :delete %>
 
 <div id="game-area">
-	<div id="current-word"></div>
-	<div id="guessed-letters"></div>
-	<div id="wrong-guesses"></div>
-	<div id="player-input">
-		<input id="player-guess" type="text"></input>
-		<button id="guess-button">Guess Letter!</button>
+	<div id="game-info">
+		<div id="current-word"></div>
+		<div id="guessed-letters"></div>
+		<div id="wrong-guesses"></div>
+		<div id="player-input">
+			<input id="player-guess" type="text"></input>
+			<button id="guess-button">Guess Letter!</button>
+		</div>
+	</div>
+	
+	<div id="hangman-graphic">
+		<img src="/assets/hangman.jpg">
+		<div class="hangman-cover" data-id="0"></div>
+		<div class="hangman-cover" data-id="1"></div>
+		<div class="hangman-cover" data-id="2"></div>
+		<div class="hangman-cover" data-id="3"></div>
+		<div class="hangman-cover" data-id="4"></div>
+		<div class="hangman-cover" data-id="5"></div>
+		<div class="hangman-cover" data-id="6"></div>
+		<div class="hangman-cover" data-id="7"></div>
+		<div class="hangman-cover" data-id="8"></div>
+		<div class="hangman-cover" data-id="9"></div>
+		<div class="hangman-cover" data-id="10"></div>
+		<div class="hangman-cover" data-id="11"></div>
 	</div>
 </div>
+
+
 
 <!-- <p><%= @game.id %> is the game id</p>
 <p><%= @game.game_word %> is the word</p>
@@ -16,16 +37,16 @@
 <p><%= @game.guessed_letters %> is the letters you have guessed</p>
 <p><%= @game.wrong_guesses %> is how many wrong guesses you've made</p> -->
 
-<%= button_to "Logout", session_url, method: :delete %>
-<%= link_to "this game", game_path(@game) %>
+
 
 
 
 <script src="lib/jquery-2.1.1.js"></script>
 <script src="app/assets/javascripts/gameView.js"></script>
 <script>
+	var imageObj = new Image();
 	var $el = $("#game-area");
-	var gameId = <%= @game.id %>
-	var View = new Hangman.GameView($el, gameId);
+	var gameId = <%= @game.id %>;
+	new Hangman.GameView($el, gameId);
 </script>
 	

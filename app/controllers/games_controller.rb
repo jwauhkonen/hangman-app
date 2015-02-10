@@ -2,7 +2,7 @@ class GamesController < ApplicationController
   
   def new
     @game = current_user.games.new
-    @game.game_word = Entry.where("char_length(word) > 3 AND char_length(word) < 8").sample.word
+    @game.game_word = Entry.where("char_length(word) > 7 AND char_length(word) < 11").sample.word
     @game.current_word = ("_" * @game.game_word.length)
     @game.wrong_guesses = 0
     

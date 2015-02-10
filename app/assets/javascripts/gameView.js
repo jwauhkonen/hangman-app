@@ -41,6 +41,8 @@
 		
 		if (this.wrongGuesses === 10) {
 			alert("You lose!")
+			var selector = '.hangman-cover[data-id="11"]'
+			$(selector).css("visibility", "hidden");
 		}
 	}
 	
@@ -48,6 +50,12 @@
 		this.renderCurrentWord();
 		this.renderGuessedLetters();
 		this.renderWrongGuesses();
+		this.revealLimb();
+	}
+	
+	GameView.prototype.revealLimb = function () {
+		var selector = '.hangman-cover[data-id="' + this.wrongGuesses + '"]'
+		$(selector).css("visibility", "hidden");
 	}
 	
 	GameView.prototype.listenForInput = function () {

@@ -1,13 +1,11 @@
 <div class="front-page">
 	
-	<h1>Coming soon: Hangman!</h1>
+	<h1>Welcome to Hangman!</h1>
 	
 	<form action="/session" class="signin-form" method="post">
-		<h3 class="form-header">Start playing!</h3>
 		<input type="hidden" name="authenticity_token" value="<% form_authenticity_token %>">
 		
-		<input type="submit" value="Begin" class="btn btn-primary">
-		
+		<input id="new-game-button" type="submit" value="New Game" class="btn btn-primary">
 	</form>
 	
 </div>

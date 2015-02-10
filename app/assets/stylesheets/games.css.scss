@@ -1,3 +1,113 @@
 // Place all the styles related to the games controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#game-info {
+	width: 500px;
+	height: 300px;
+	float: left;
+	border-style: solid;
+	border-width: 3px;
+}
+
+#hangman-graphic {
+	position: relative;
+	float: left;
+	width: 300px;
+	height: 300px;
+	border-style: solid;
+	border-width: 3px;
+	border-left: none;
+	margin: auto;
+}
+
+.hangman-cover {
+	position: absolute;
+	z-index: 10;
+	background-color: white;
+}
+
+.hangman-cover[data-id="0"] {
+	
+}
+
+.hangman-cover[data-id="1"] {
+	width: 42px;
+	height: 41px;
+	left: 51px;
+	bottom: 177px;
+	
+}
+
+.hangman-cover[data-id="2"] {
+	width: 7px;
+	height: 78px;
+	left: 69px;
+	bottom: 98px;
+	
+}
+
+.hangman-cover[data-id="3"] {
+	width: 45px;
+	height: 7px;
+	left: 29px;
+	bottom: 146px;
+	
+}
+
+.hangman-cover[data-id="4"] {
+	width: 45px;
+	height: 7px;
+	left: 71px;
+	bottom: 146px;
+}
+
+.hangman-cover[data-id="5"] {
+	width: 41px;
+	height: 35px;
+	left: 28px;
+	bottom: 74px;
+}
+
+.hangman-cover[data-id="6"] {
+	width: 41px;
+	height: 35px;
+	left: 76px;
+	bottom: 74px;
+}
+
+.hangman-cover[data-id="7"] {
+	width: 20px;
+	height: 20px;
+	left: 9px;
+	bottom: 140px;
+}
+
+.hangman-cover[data-id="8"] {
+	width: 20px;
+	height: 20px;
+	left: 116px;
+	bottom: 140px;
+}
+
+.hangman-cover[data-id="9"] {
+	width: 20px;
+	height: 35px;
+	left: 8px;
+	bottom: 74px;
+}
+
+.hangman-cover[data-id="10"] {
+	width: 20px;
+	height: 35px;
+	left: 117px;
+	bottom: 74px;
+}
+
+.hangman-cover[data-id="11"] {
+	width: 25px;
+	height: 25px;
+	left: 59px;
+	bottom: 185px;
+	border-radius: 12px;
+}
