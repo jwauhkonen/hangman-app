@@ -12,6 +12,14 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find_by_session_token(session[:token])
   end
   
+  def signed_in?
+    !current_user.nil?
+  end
+  
+  def require_signed_in!
+    redirect_to new_session_url unless signed_in?
+  end
+  
   def sign_in!(user)
     @current_user = user
     session[:token] = user.reset_token!

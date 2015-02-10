@@ -33,6 +33,8 @@ class SessionsController < ApplicationController
   end
   
   def destroy
+    user_id = current_user.id
+    Game.where("user_id = #{user_id}").destroy_all
     destroy_current_user!
     redirect_to root_url
   end

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: "sessions#new"
+  root to: "games#new"
   
   resource :session, only: [:new, :show, :create, :update, :destroy]
   

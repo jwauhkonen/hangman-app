@@ -73,6 +73,16 @@
 	margin: auto;
 }
 
+#game-over-message {
+	position: absolute;
+	width: 450px;
+	height: 200px;
+	left: 50px;
+	bottom: 20px;
+	font-size: 25px;
+	text-align: center;
+}
+
 .hangman-cover {
 	position: absolute;
 	z-index: 10;

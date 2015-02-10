@@ -1,4 +1,5 @@
 class GamesController < ApplicationController
+  before_action :require_signed_in!
   
   def new
     @game = current_user.games.new

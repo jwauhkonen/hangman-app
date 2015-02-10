@@ -29,7 +29,7 @@
 	GameView.prototype.getGameData = function () {
 		var that = this;
 		$.ajax({
-			url: this.gameId,
+			url: "/games/" + this.gameId,
 			type: "GET",
 			success: function (data) {
 				that.updateGame(data);
@@ -48,6 +48,9 @@
 			success: function () {
 				that.wins += 1;
 				that.renderWinCount();
+				$("#game-info").empty();
+				$("#game-over-message").css("color", "blue");
+				$("#game-over-message").html("Great Job! With your superior intellect you have saved a man's life.");
 			}
 		})
 	}
@@ -63,6 +66,9 @@
 			success: function () {
 				that.losses += 1
 				that.renderWinCount();
+				$("#game-info").empty();
+				$("#game-over-message").css("color", "red");
+				$("#game-over-message").html("For shame! This poor man's death will forever be on your conscience.");
 			}
 		})
 	}
@@ -118,7 +124,7 @@
 		var that = this;
 		if (this.validMove(guess)) {
 			$.ajax({
-				url: this.gameId,
+				url: "/games/" + this.gameId,
 				type: "PATCH",
 				data: {
 					letter: guess
