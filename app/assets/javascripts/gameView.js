@@ -51,6 +51,7 @@
 				$("#game-info").empty();
 				$("#game-over-message").css("color", "blue");
 				$("#game-over-message").html("Great Job! With your superior intellect you have saved a man's life.");
+				that.revealWord();
 			}
 		})
 	}
@@ -69,6 +70,17 @@
 				$("#game-info").empty();
 				$("#game-over-message").css("color", "red");
 				$("#game-over-message").html("For shame! This poor man's death will forever be on your conscience.");
+				that.revealWord();
+			}
+		})
+	}
+	
+	GameView.prototype.revealWord = function () {
+		$.ajax({
+			url: "/games/" + this.gameId,
+			type: "GET",
+			success: function (data) {
+				$("#full-word").html(data.game_word);
 			}
 		})
 	}
@@ -86,6 +98,7 @@
 	}
 	
 	GameView.prototype.renderGame = function () {
+		$("#player-guess").focus();
 		this.renderCurrentWord();
 		this.renderGuessedLetters();
 		this.renderWrongGuesses();

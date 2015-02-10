@@ -83,6 +83,16 @@
 	text-align: center;
 }
 
+#full-word {
+	position: absolute;
+	width: 450px;
+	height: 100px;
+	left: 40px;
+	top: 280px;
+	font-size: 60px;
+	text-align: center;
+}
+
 .hangman-cover {
 	position: absolute;
 	z-index: 10;
