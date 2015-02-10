@@ -1,4 +1,8 @@
-<%= button_to "Quit Game", session_url, method: :delete %>
+<div id="game-header">
+	<%= button_to "Quit Game", session_url, {id: "quit-button", method: :delete} %>
+	<div id="win-count"><%= @game.user.games_won %> wins - <%= @game.user.games_lost %> losses</div>
+	<%= button_to "New Game", new_game_url, {id: "restart-button", method: :get} %>
+</div>
 
 <div id="game-area">
 	<div id="game-info">
