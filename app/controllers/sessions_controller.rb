@@ -19,19 +19,6 @@ class SessionsController < ApplicationController
     redirect_to new_game_url
   end
   
-  def update
-    result = params[:game]
-    @user = current_user
-    
-    if result == "win"
-      @user.games_won += 1
-    elsif result == "lose"
-      @user.games_lost += 1
-    end
-    @user.save
-    render :new
-  end
-  
   def destroy
     user_id = current_user.id
     Game.where("user_id = #{user_id}").destroy_all

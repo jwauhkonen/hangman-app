@@ -23,7 +23,7 @@
 		this.guessedLetters = data.guessed_letters;
 		this.wrongGuesses = data.wrong_guesses;
 		this.renderGame();
-		this.checkGameOver();
+		this.checkGameOver(data.state);
 	}
 	
 	GameView.prototype.getGameData = function () {
@@ -38,41 +38,21 @@
 	}
 	
 	GameView.prototype.gameWin = function () {
-		var that = this;
-		$.ajax({
-			url: "/session",
-			type: "PATCH",
-			data: {
-				game: "win"
-			},
-			success: function () {
-				that.wins += 1;
-				that.renderWinCount();
-				$("#game-info").empty();
-				$("#game-over-message").css("color", "blue");
-				$("#game-over-message").html("Great Job! With your superior intellect you have saved a man's life.");
-				that.revealWord();
-			}
-		})
+		this.wins += 1;
+		this.renderWinCount();
+		$("#game-info").empty();
+		$("#game-over-message").css("color", "blue");
+		$("#game-over-message").html("Great Job! With your superior intellect you have saved a man's life.");
+		this.revealWord();
 	}
 	
 	GameView.prototype.gameLoss = function () {
-		var that = this;
-		$.ajax({
-			url: "/session",
-			type: "PATCH",
-			data: {
-				game: "lose"
-			},
-			success: function () {
-				that.losses += 1
-				that.renderWinCount();
-				$("#game-info").empty();
-				$("#game-over-message").css("color", "red");
-				$("#game-over-message").html("For shame! This poor man's death will forever be on your conscience.");
-				that.revealWord();
-			}
-		})
+		this.losses += 1
+		this.renderWinCount();
+		$("#game-info").empty();
+		$("#game-over-message").css("color", "red");
+		$("#game-over-message").html("For shame! This poor man's death will forever be on your conscience.");
+		this.revealWord();
 	}
 	
 	GameView.prototype.revealWord = function () {
@@ -85,12 +65,12 @@
 		})
 	}
 	
-	GameView.prototype.checkGameOver = function () {
-		if (this.currentWord.indexOf("_") === -1) {
+	GameView.prototype.checkGameOver = function (state) {
+		if (state === "won") {
 			this.gameWin();
 		}
 		
-		if (this.wrongGuesses === 10) {
+		if (state === "lost") {
 			this.gameLoss();
 			var selector = '.hangman-cover[data-id="11"]'
 			$(selector).css("visibility", "hidden");
