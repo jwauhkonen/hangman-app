@@ -114,7 +114,6 @@
 	
 	GameView.prototype.submitGuess = function (e) {
 		var guess = String.fromCharCode(e.keyCode)
-		console.log(guess);
 		var that = this;
 		if (this.validMove(guess)) {
 			$.ajax({
@@ -124,7 +123,6 @@
 					letter: guess
 				},
 				success: function () {
-					console.log('hooray')
 					that.getGameData();
 				}
 			})
