@@ -17,6 +17,7 @@
 	height: 40px;
 	font-size: 15px;
 	color: white;
+	background-color: black;
 }
 
 #quit-button:hover {
@@ -38,6 +39,7 @@
 	top: 0px;
 	font-size: 15px;
 	color: white;
+	background-color: black;
 }
 
 #restart-button:hover, #forfeit-check-button:hover {
@@ -123,12 +125,6 @@
 	width: 400px;
 	bottom: 150px;
 	left: 20px;
-}
-
-#guess-button:hover {
-	background-color: black;
-	color: blue;
-	cursor: pointer;
 }
 
 #current-word {
