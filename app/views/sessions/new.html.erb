@@ -3,7 +3,7 @@
 	<h1>Welcome to Hangman!</h1>
 	
 	<form action="/session" class="signin-form" method="post">
-		<input type="hidden" name="authenticity_token" value="<% form_authenticity_token %>">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
 		
 		<input id="new-game-button" type="submit" value="New Game" class="btn btn-primary">
 	</form>

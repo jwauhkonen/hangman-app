@@ -44,6 +44,7 @@
 		$("#game-over-message").css("color", "blue");
 		$("#game-over-message").html("Great Job! With your superior intellect you have saved a man's life.");
 		this.revealWord();
+		$("#forfeit-check-button").css("z-index", "-10");
 	}
 	
 	GameView.prototype.gameLoss = function () {
@@ -53,6 +54,7 @@
 		$("#game-over-message").css("color", "red");
 		$("#game-over-message").html("For shame! This poor man's death will forever be on your conscience.");
 		this.revealWord();
+		$("#forfeit-check-button").css("z-index", "-10");
 	}
 	
 	GameView.prototype.revealWord = function () {
@@ -96,8 +98,9 @@
 	}
 	
 	GameView.prototype.listenForInput = function () {
-		var that = this;
+		$("#forfeit-check-button").on("click", this.checkForfeit.bind(this));
 		
+		var that = this;
 		var clickSubmit = function () {
 			var guess = $("#player-guess")[0].value
 			that.submitGuess(guess);
@@ -110,6 +113,14 @@
 				clickSubmit();
 			}
 		});
+	}
+	
+	GameView.prototype.checkForfeit = function () {
+		var that = this;
+		
+		if (confirm("Forfeit this game and start a new one?") === true) {
+			$("#restart-button").click();
+		}
 	}
 	
 	GameView.prototype.submitGuess = function (guess) {

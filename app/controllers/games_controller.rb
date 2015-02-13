@@ -12,6 +12,11 @@ class GamesController < ApplicationController
     render :new
   end
   
+  def create
+    check_forfeit
+    redirect_to new_game_url
+  end
+  
   def show
     @game = Game.find(params[:id])
     render :show
@@ -27,6 +32,7 @@ class GamesController < ApplicationController
     check_for_win
     check_for_loss
     
+    update_win_count
     @game.save
     render :new
   end
@@ -35,21 +41,38 @@ class GamesController < ApplicationController
   private
   
   
+  def check_forfeit
+    if params[:id]
+      @game = Game.find(params[:id])
+      
+      if @game.state == "ongoing"
+        @game.state = "lost"
+        update_win_count
+      end
+    end
+  end
+  
+  def update_win_count
+    @user = current_user
+    
+    if @game.state == "won"
+      @user.games_won += 1
+    elsif @game.state == "lost"
+      @user.games_lost += 1
+    end
+    
+    @user.save
+  end
+  
   def check_for_win
     if @game.game_word == @game.current_word
       @game.state = "won"
-      @user = current_user
-      @user.games_won += 1
-      @user.save
     end
   end
   
   def check_for_loss
     if @game.wrong_guesses == 10
       @game.state = "lost"
-      @user = current_user
-      @user.games_lost += 1
-      @user.save
     end
   end
   

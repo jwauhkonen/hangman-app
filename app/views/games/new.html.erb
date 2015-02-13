@@ -1,7 +1,12 @@
 <div id="game-header">
 	<%= button_to "Quit Game", session_url, {id: "quit-button", method: :delete} %>
 	<div id="win-count"><%= @game.user.games_won %> wins - <%= @game.user.games_lost %> losses</div>
-	<%= button_to "New Game", new_game_url, {id: "restart-button", method: :get} %>
+	<form action="/games" class="restart-form" method="post">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+		<input type="hidden" name="id" value="<%= @game.id %>">
+		<input id="restart-button" type="submit" value="New Game" class="btn btn-primary">
+	</form>
+	<button id="forfeit-check-button">New Game</button>
 </div>
 
 <div id="game-area">

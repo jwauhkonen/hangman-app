@@ -25,7 +25,7 @@
 	cursor: pointer;
 }
 
-#restart-button {
+#restart-button, #forfeit-check-button {
 	position: absolute;
 
 	border-style: solid;
@@ -40,10 +40,14 @@
 	color: white;
 }
 
-#restart-button:hover {
+#restart-button:hover, #forfeit-check-button:hover {
 	background-color: black;
 	color: yellow;
 	cursor: pointer;
+}
+
+#forfeit-check-button {
+	z-index: 10;
 }
 
 #win-count {
