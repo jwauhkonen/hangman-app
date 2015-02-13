@@ -31,6 +31,7 @@
 		$.ajax({
 			url: "/games/" + this.gameId,
 			type: "GET",
+			dataType: "json",
 			success: function (data) {
 				that.updateGame(data);
 			}
@@ -61,6 +62,7 @@
 		$.ajax({
 			url: "/games/" + this.gameId,
 			type: "GET",
+			dataType: "json",
 			success: function (data) {
 				$("#full-word").html(data.game_word);
 			}

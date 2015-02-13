@@ -2,6 +2,12 @@ class GamesController < ApplicationController
   before_action :require_signed_in!
   
   def new
+    create
+  end
+  
+  def create
+    check_forfeit
+    
     @game = current_user.games.new
     @game.game_word = word_list.select { |word| (word.length > 7) && (word.length < 11) }.sample
     @game.current_word = ("_" * @game.game_word.length)
@@ -9,17 +15,17 @@ class GamesController < ApplicationController
     @game.state = "ongoing"
     
     @game.save
-    render :new
-  end
-  
-  def create
-    check_forfeit
-    redirect_to new_game_url
+    
+    redirect_to game_url(@game)
   end
   
   def show
     @game = Game.find(params[:id])
-    render :show
+    
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render json: @game }
+    end
   end
   
   def update
@@ -34,7 +40,7 @@ class GamesController < ApplicationController
     
     update_win_count
     @game.save
-    render :new
+    render :show
   end
   
   
