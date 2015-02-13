@@ -80,7 +80,6 @@
 	}
 	
 	GameView.prototype.renderGame = function () {
-		$("#player-guess").focus();
 		this.renderCurrentWord();
 		this.renderGuessedLetters();
 		this.renderWrongGuesses();
@@ -100,19 +99,9 @@
 	GameView.prototype.listenForInput = function () {
 		$("#forfeit-check-button").on("click", this.checkForfeit.bind(this));
 		
-		var that = this;
-		var clickSubmit = function () {
-			var guess = $("#player-guess")[0].value
-			that.submitGuess(guess);
-		};
-		
-		$("#guess-button").on("click", clickSubmit);
-		
-		$("#game-area").on("keypress", function (e) {
-			if (e.which === 13) {
-				clickSubmit();
-			}
-		});
+		$(document).on("keypress", function (e) {
+			this.submitGuess(e);
+		}.bind(this));
 	}
 	
 	GameView.prototype.checkForfeit = function () {
@@ -123,7 +112,8 @@
 		}
 	}
 	
-	GameView.prototype.submitGuess = function (guess) {
+	GameView.prototype.submitGuess = function (e) {
+		var guess = String.fromCharCode(e.keyCode)
 		console.log(guess);
 		var that = this;
 		if (this.validMove(guess)) {
@@ -144,11 +134,6 @@
 	}
 	
 	GameView.prototype.validMove = function (guess) {
-		if (guess.length !== 1) {
-			alert("Guess must be a single character.");
-			return false
-		}
-		
 		if (/[a-z]/.test(guess) === false) {
 			alert("Guess must be a lower-case letter.");
 			return false

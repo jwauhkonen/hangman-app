@@ -117,27 +117,12 @@
 	left: 20px;
 }
 
-#player-guess {
+#player-prompt {
 	position: absolute;
 	font-size: 20px;
-	width: 20px;
+	width: 400px;
 	bottom: 150px;
 	left: 20px;
-}
-
-#guess-button {
-	border: none;
-	
-	position: absolute;
-	font-size: 15px;
-	width: 80px;
-	height: 30px;
-	bottom: 150px;
-	left: 60px;
-	border-style: solid;
-	border-color: black;
-	border-width: 1px;
-	color: white;
 }
 
 #guess-button:hover {
