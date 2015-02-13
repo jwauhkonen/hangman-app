@@ -3,9 +3,17 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   
-  helper_method :current_user
+  helper_method :current_user, :word_list
   
   private
+  
+  def word_list
+    @word_list ||= generate_word_list
+  end
+  
+  def generate_word_list
+    File.readlines("lib/dictionary.txt").map { |word| word = word.chomp }
+  end
   
   def current_user
     return nil unless session[:token]
