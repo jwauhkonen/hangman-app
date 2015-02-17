@@ -15,13 +15,35 @@
 		this.listenForInput();
 	}
 	
-	GameView.prototype.updateGame = function (data) {
-		this.currentWord = data.current_word;
-		this.guessedLetters = data.guessed_letters;
-		this.wrongGuesses = data.wrong_guesses;
-		this.state = data.state;
-		this.renderGame();
-		this.checkGameOver();
+	GameView.prototype.checkForfeit = function () {
+		var that = this;
+		
+		if (confirm("Forfeit this game and start a new one?") === true) {
+			$("#restart-button").click();
+		}
+	}
+	
+	GameView.prototype.checkGameOver = function () {
+		if (this.state !== "ongoing") {
+			this.gameOver();
+		}
+	}
+	
+	GameView.prototype.gameOver = function () {
+		// getWinCount prompts renderWinCount
+		this.getWinCount();
+		$("#game-info").empty();
+		this.revealWord();
+		// brings #restart-button to front
+		$("#forfeit-check-button").css("z-index", "-10");
+		
+		if (this.state === "won") {
+			$("#game-over-message").css("color", "blue");
+			$("#game-over-message").html("Great Job! With your superior intellect you have saved a man's life.");
+		} else if (this.state === "lost") {
+			$("#game-over-message").css("color", "red");
+			$("#game-over-message").html("For shame! This poor man's death will forever be on your conscience.");
+		}
 	}
 	
 	GameView.prototype.getGameData = function () {
@@ -49,61 +71,6 @@
 		})
 	}
 	
-	GameView.prototype.gameOver = function () {
-		// getWinCount prompts renderWinCount
-		this.getWinCount();
-		$("#game-info").empty();
-		this.revealWord();
-		// brings #restart-button to front
-		$("#forfeit-check-button").css("z-index", "-10");
-		
-		if (this.state === "won") {
-			$("#game-over-message").css("color", "blue");
-			$("#game-over-message").html("Great Job! With your superior intellect you have saved a man's life.");
-		} else if (this.state === "lost") {
-			$("#game-over-message").css("color", "red");
-			$("#game-over-message").html("For shame! This poor man's death will forever be on your conscience.");
-		}
-	}
-	
-	GameView.prototype.revealWord = function () {
-		$.ajax({
-			url: "/games/" + this.gameId,
-			type: "GET",
-			dataType: "json",
-			success: function (data) {
-				$("#full-word").html(data.game_word);
-			}
-		})
-	}
-	
-	GameView.prototype.checkGameOver = function () {
-		if (this.state !== "ongoing") {
-			this.gameOver();
-		}
-	}
-	
-	GameView.prototype.renderGame = function () {
-		this.renderCurrentWord();
-		this.renderGuessedLetters();
-		this.renderWrongGuesses();
-		this.revealLimb(this.wrongGuesses);
-	}
-	
-	GameView.prototype.renderWinCount = function () {
-		$("#win-count").html(this.wins + " wins - " + this.losses + " losses");
-	}
-	
-	GameView.prototype.revealLimb = function (limbNum) {
-		for (var limb = 1; limb <= limbNum; limb++) {
-			var selector = '.hangman-cover[data-id="' + limb + '"]'
-			if (!($(selector).css("opacity") === "0")) {
-				$(selector).css("opacity", "0");
-				$(selector).css("transition", "opacity 1s");
-			}
-		}
-	}
-	
 	GameView.prototype.listenForInput = function () {
 		$("#forfeit-check-button").on("click", this.checkForfeit.bind(this));
 		
@@ -120,12 +87,51 @@
 		}.bind(this));
 	}
 	
-	GameView.prototype.checkForfeit = function () {
-		var that = this;
-		
-		if (confirm("Forfeit this game and start a new one?") === true) {
-			$("#restart-button").click();
+	GameView.prototype.renderCurrentWord = function () {
+		var wordString = this.currentWord.split("").join(" ")
+		$("#current-word").html(wordString);
+	}
+	
+	GameView.prototype.renderGame = function () {
+		this.renderCurrentWord();
+		this.renderGuessedLetters();
+		this.renderWrongGuesses();
+		this.revealLimb(this.wrongGuesses);
+	}
+	
+	GameView.prototype.renderGuessedLetters = function () {
+		var guessesString = this.guessedLetters.sort().join(", ");
+		$("#guessed-letters").html("Guessed letters: " + guessesString);
+	}
+	
+	GameView.prototype.renderWinCount = function () {
+		$("#win-count").html(this.wins + " wins - " + this.losses + " losses");
+	}
+	
+	GameView.prototype.renderWrongGuesses = function () {
+		var guessesLeft = (10 - this.wrongGuesses)
+		$("#wrong-guesses").html("You have " + guessesLeft + " wrong guesses left.");
+	}
+	
+	GameView.prototype.revealLimb = function (limbNum) {
+		for (var limb = 1; limb <= limbNum; limb++) {
+			var selector = '.hangman-cover[data-id="' + limb + '"]'
+			if (!($(selector).css("opacity") === "0")) {
+				$(selector).css("opacity", "0");
+				$(selector).css("transition", "opacity 1s");
+			}
 		}
+	}
+	
+	GameView.prototype.revealWord = function () {
+		$.ajax({
+			url: "/games/" + this.gameId,
+			type: "GET",
+			dataType: "json",
+			success: function (data) {
+				$("#full-word").html(data.game_word);
+			}
+		})
 	}
 	
 	GameView.prototype.submitGuess = function (e) {
@@ -147,6 +153,15 @@
 		$("#player-guess").val("");
 	}
 	
+	GameView.prototype.updateGame = function (data) {
+		this.currentWord = data.current_word;
+		this.guessedLetters = data.guessed_letters;
+		this.wrongGuesses = data.wrong_guesses;
+		this.state = data.state;
+		this.renderGame();
+		this.checkGameOver();
+	}
+	
 	GameView.prototype.validMove = function (guess) {
 		if (/[a-z]/.test(guess) === false) {
 			alert("Guess must be a lower-case letter.");
@@ -160,23 +175,5 @@
 		
 		return true
 	}
-	
-	GameView.prototype.renderCurrentWord = function () {
-		var wordString = this.currentWord.split("").join(" ")
-		$("#current-word").html(wordString);
-	}
-	
-	GameView.prototype.renderGuessedLetters = function () {
-		var guessesString = this.guessedLetters.sort().join(", ");
-		$("#guessed-letters").html("Guessed letters: " + guessesString);
-	}
-	
-	GameView.prototype.renderWrongGuesses = function () {
-		var guessesLeft = (10 - this.wrongGuesses)
-		$("#wrong-guesses").html("You have " + guessesLeft + " wrong guesses left.");
-	}
-	
-	
-	
 	
 })();

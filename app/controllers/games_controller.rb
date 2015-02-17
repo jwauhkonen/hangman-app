@@ -58,27 +58,15 @@ class GamesController < ApplicationController
     end
   end
   
-  def update_win_count
-    @user = current_user
-    
-    if @game.state == "won"
-      @user.games_won += 1
-    elsif @game.state == "lost"
-      @user.games_lost += 1
+  def check_for_loss
+    if @game.wrong_guesses == 10
+      @game.state = "lost"
     end
-    
-    @user.save
   end
   
   def check_for_win
     if @game.game_word == @game.current_word
       @game.state = "won"
-    end
-  end
-  
-  def check_for_loss
-    if @game.wrong_guesses == 10
-      @game.state = "lost"
     end
   end
   
@@ -94,15 +82,27 @@ class GamesController < ApplicationController
     @game.current_word = new_current_word.join("")
   end
   
-  def update_wrong_guesses(letter)
-     @game.wrong_guesses += 1 unless @game.game_word.include?(letter)
-  end
-  
   def update_guessed_letters(letter)
     new_guessed_letters = []
     @game.guessed_letters.each { |guess| new_guessed_letters << guess }
     new_guessed_letters << letter
     @game.guessed_letters = new_guessed_letters
+  end
+  
+  def update_win_count
+    @user = current_user
+    
+    if @game.state == "won"
+      @user.games_won += 1
+    elsif @game.state == "lost"
+      @user.games_lost += 1
+    end
+    
+    @user.save
+  end
+  
+  def update_wrong_guesses(letter)
+     @game.wrong_guesses += 1 unless @game.game_word.include?(letter)
   end
   
 end
