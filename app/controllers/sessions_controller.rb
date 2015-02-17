@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   
   def show
     @user = current_user
-    render :show
+    render json: @user
   end
   
   def create

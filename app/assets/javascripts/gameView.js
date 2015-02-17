@@ -11,9 +11,11 @@
 		this.currentWord = "";
 		this.guessedLetters = [];
 		this.wrongGuesses = 0;
+		this.state = "ongoing";
+		this.winIncremented = false;
 	
-		// getGameData prompts the next move on success.
 		this.renderWinCount();
+		// getGameData prompts the next move on success.
 		this.getGameData();
 		this.listenForInput();
 	}
@@ -22,6 +24,7 @@
 		this.currentWord = data.current_word;
 		this.guessedLetters = data.guessed_letters;
 		this.wrongGuesses = data.wrong_guesses;
+		this.state = data.state;
 		this.renderGame();
 		this.checkGameOver(data.state);
 	}
@@ -38,9 +41,23 @@
 		})
 	}
 	
+	GameView.prototype.getWinCount = function () {
+		var that = this;
+		$.ajax({
+			url: "/session",
+			type: "GET",
+			success: function (data) {
+				that.wins = data.games_won;
+				that.losses = data.games_lost;
+				that.renderWinCount();
+			}
+		})
+	}
+	
 	GameView.prototype.gameWin = function () {
-		this.wins += 1;
-		this.renderWinCount();
+		// get and render new win count
+		this.getWinCount();
+		
 		$("#game-info").empty();
 		$("#game-over-message").css("color", "blue");
 		$("#game-over-message").html("Great Job! With your superior intellect you have saved a man's life.");
@@ -49,8 +66,10 @@
 	}
 	
 	GameView.prototype.gameLoss = function () {
-		this.losses += 1
-		this.renderWinCount();
+		// get and render new win count
+		this.getWinCount();
+		
+		this.revealLimb(11);
 		$("#game-info").empty();
 		$("#game-over-message").css("color", "red");
 		$("#game-over-message").html("For shame! This poor man's death will forever be on your conscience.");
@@ -76,8 +95,6 @@
 		
 		if (state === "lost") {
 			this.gameLoss();
-			var selector = '.hangman-cover[data-id="11"]'
-			$(selector).css("visibility", "hidden");
 		}
 	}
 	
@@ -85,17 +102,21 @@
 		this.renderCurrentWord();
 		this.renderGuessedLetters();
 		this.renderWrongGuesses();
-		this.revealLimb();
+		this.revealLimb(this.wrongGuesses);
 	}
 	
 	GameView.prototype.renderWinCount = function () {
 		$("#win-count").html(this.wins + " wins - " + this.losses + " losses");
 	}
 	
-	GameView.prototype.revealLimb = function () {
-		var selector = '.hangman-cover[data-id="' + this.wrongGuesses + '"]'
-		$(selector).css("opacity", "0");
-		$(selector).css("transition", "opacity 1s");
+	GameView.prototype.revealLimb = function (limbNum) {
+		for (var limb = 1; limb <= limbNum; limb++) {
+			var selector = '.hangman-cover[data-id="' + limb + '"]'
+			if (!($(selector).css("opacity") === "0")) {
+				$(selector).css("opacity", "0");
+				$(selector).css("transition", "opacity 1s");
+			}
+		}
 	}
 	
 	GameView.prototype.listenForInput = function () {
