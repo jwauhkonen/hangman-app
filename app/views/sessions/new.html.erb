@@ -9,3 +9,12 @@
 	</form>
 	
 </div>
+
+<script src="lib/jquery-2.1.1.js"></script>
+<script>
+	$(document).on("keypress", function (e) {
+		if (e.keyCode === 13) {
+			$("#new-game-button").click();
+		}
+	})
+</script>

@@ -8,11 +8,6 @@
 		this.gameId = gameId;
 		this.wins = wins;
 		this.losses = losses;
-		this.currentWord = "";
-		this.guessedLetters = [];
-		this.wrongGuesses = 0;
-		this.state = "ongoing";
-		this.winIncremented = false;
 	
 		this.renderWinCount();
 		// getGameData prompts the next move on success.
@@ -26,7 +21,7 @@
 		this.wrongGuesses = data.wrong_guesses;
 		this.state = data.state;
 		this.renderGame();
-		this.checkGameOver(data.state);
+		this.checkGameOver();
 	}
 	
 	GameView.prototype.getGameData = function () {
@@ -54,27 +49,21 @@
 		})
 	}
 	
-	GameView.prototype.gameWin = function () {
-		// get and render new win count
+	GameView.prototype.gameOver = function () {
+		// getWinCount prompts renderWinCount
 		this.getWinCount();
-		
 		$("#game-info").empty();
-		$("#game-over-message").css("color", "blue");
-		$("#game-over-message").html("Great Job! With your superior intellect you have saved a man's life.");
 		this.revealWord();
+		// brings #restart-button to front
 		$("#forfeit-check-button").css("z-index", "-10");
-	}
-	
-	GameView.prototype.gameLoss = function () {
-		// get and render new win count
-		this.getWinCount();
 		
-		this.revealLimb(11);
-		$("#game-info").empty();
-		$("#game-over-message").css("color", "red");
-		$("#game-over-message").html("For shame! This poor man's death will forever be on your conscience.");
-		this.revealWord();
-		$("#forfeit-check-button").css("z-index", "-10");
+		if (this.state === "won") {
+			$("#game-over-message").css("color", "blue");
+			$("#game-over-message").html("Great Job! With your superior intellect you have saved a man's life.");
+		} else if (this.state === "lost") {
+			$("#game-over-message").css("color", "red");
+			$("#game-over-message").html("For shame! This poor man's death will forever be on your conscience.");
+		}
 	}
 	
 	GameView.prototype.revealWord = function () {
@@ -88,13 +77,9 @@
 		})
 	}
 	
-	GameView.prototype.checkGameOver = function (state) {
-		if (state === "won") {
-			this.gameWin();
-		}
-		
-		if (state === "lost") {
-			this.gameLoss();
+	GameView.prototype.checkGameOver = function () {
+		if (this.state !== "ongoing") {
+			this.gameOver();
 		}
 	}
 	
@@ -123,7 +108,15 @@
 		$("#forfeit-check-button").on("click", this.checkForfeit.bind(this));
 		
 		$(document).on("keypress", function (e) {
-			this.submitGuess(e);
+			if (e.keyCode === 13) {
+				if (this.state === "ongoing") {
+					$("#forfeit-check-button").click();
+				} else {
+					$("#restart-button").click();
+				}
+			} else {
+				this.submitGuess(e);
+			}
 		}.bind(this));
 	}
 	
