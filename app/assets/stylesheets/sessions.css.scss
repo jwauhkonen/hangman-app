@@ -14,7 +14,7 @@
 	
 	border-style: solid;
 	border-color: black;
-	border-width: 2px;
+	border-width: 3px;
 	border-radius: 10px;
 	width: 150px;
 	height: 80px;
@@ -24,7 +24,7 @@
 }
 
 #new-game-button:hover {
-	background-color: black;
-	color: red;
+	background-color: red;
+	color: white;
 	cursor: pointer;
 }
