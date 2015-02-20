@@ -40,7 +40,7 @@ gem 'spring',        group: :development
 
 gem 'byebug'
 
-gem 'newrelic-rpm'
+gem 'newrelic_rpm'
 
 group :development do
   gem 'better_errors'
